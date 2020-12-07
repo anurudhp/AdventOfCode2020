@@ -2,10 +2,12 @@ import Control.Arrow ((>>>))
 import Text.Parsec
 
 main :: IO ()
-main = interact $ lines >>> solve >>> show
+main =
+  interact $
+  lines >>> (solve <$> [valid1, valid2] <*>) . pure >>> map show >>> unlines
 
-solve :: [String] -> Int
-solve = length . filter id . map process
+solve :: Validator -> [String] -> Int
+solve valid = length . filter id . map process
   where
     process :: String -> Bool
     process line =
@@ -21,15 +23,14 @@ solve = length . filter id . map process
       s <- many anyChar
       return $ valid l r c s
 
--- select part
-valid = valid1
+type Validator = Int -> Int -> Char -> String -> Bool
 
-valid1 :: Int -> Int -> Char -> String -> Bool
+valid1 :: Validator
 valid1 l r c s =
   let f = length [c' | c' <- s, c' == c]
    in l <= f && f <= r
 
-valid2 :: Int -> Int -> Char -> String -> Bool
+valid2 :: Validator
 valid2 l r c s
   | lc = not rc
   | otherwise = rc
