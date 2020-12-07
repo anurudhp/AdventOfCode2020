@@ -2,6 +2,7 @@
 *.out
 *.o
 *.hi
+tmp/
 dist-newstyle
 CHANGELOG.md
 Setup.hs
