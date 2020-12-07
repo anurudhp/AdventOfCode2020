@@ -1,6 +1,7 @@
 import Control.Arrow ((>>>))
 import Data.List
 import Data.Maybe
+import Helpers
 import Text.Read
 
 main :: IO ()
@@ -111,15 +112,3 @@ parsePassport s =
   where
     kvs = map ((\[k, v] -> (k, v)) . splitOn (== ':')) . words $ s
     get k = lookup k kvs
-
--- Helpers
-count :: Eq a => a -> [a] -> Int
-count x = length . filter (== x)
-
-splitOn :: (a -> Bool) -> [a] -> [[a]]
-splitOn _ [] = [[]]
-splitOn pred (x:xs)
-  | pred x = [] : g : gs
-  | otherwise = (x : g) : gs
-  where
-    (g:gs) = splitOn pred xs

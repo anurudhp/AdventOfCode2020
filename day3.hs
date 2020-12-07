@@ -1,4 +1,5 @@
 import Control.Arrow ((>>>))
+import Helpers
 
 main :: IO ()
 main = interact $ lines >>> solve2 >>> show
@@ -21,12 +22,3 @@ solve1, solve2 :: [String] -> Int
 solve1 = numTrees' 3 1
 
 solve2 = prodNumTrees [(1, 1), (3, 1), (5, 1), (7, 1), (1, 2)]
-
-chunksOf :: Int -> [a] -> [[a]]
-chunksOf _ [] = []
-chunksOf n xs =
-  let (hs, ts) = splitAt n xs
-   in hs : chunksOf n ts
-
-count :: Eq a => a -> [a] -> Int
-count x xs = length [x | x' <- xs, x' == x]

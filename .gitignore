@@ -2,3 +2,6 @@
 *.out
 *.o
 *.hi
+dist-newstyle
+CHANGELOG.md
+Setup.hs
