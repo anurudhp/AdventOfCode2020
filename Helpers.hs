@@ -1,7 +1,10 @@
 module Helpers where
 
+countPred :: Eq a => (a -> Bool) -> [a] -> Int
+countPred p = length . filter p
+
 count :: Eq a => a -> [a] -> Int
-count x = length . filter (== x)
+count x = countPred (== x)
 
 chunksOf :: Int -> [a] -> [[a]]
 chunksOf _ [] = []
@@ -11,8 +14,8 @@ chunksOf n xs =
 
 splitOn :: (a -> Bool) -> [a] -> [[a]]
 splitOn _ [] = [[]]
-splitOn pred (x:xs)
-  | pred x = [] : g : gs
+splitOn p (x:xs)
+  | p x = [] : g : gs
   | otherwise = (x : g) : gs
   where
-    (g:gs) = splitOn pred xs
+    (g:gs) = splitOn p xs

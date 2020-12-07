@@ -1,16 +1,17 @@
 import Control.Arrow ((>>>))
-import Data.List
-import Data.Maybe
+import Data.List ((\\))
+import Data.Maybe (isJust)
 import Helpers
-import Text.Read
+import Text.Read (readMaybe)
 
 main :: IO ()
 main =
   interact $
   lines >>>
-  splitOn null >>> map unwords >>> map checkValid >>> count True >>> show
-
-checkValid = checkValidFull
+  splitOn null >>>
+  map unwords >>>
+  (countPred <$> [checkValidBasic, checkValidFull] <*>) . pure >>>
+  map show >>> unlines
 
 -- part 1
 checkValidBasic :: String -> Bool
