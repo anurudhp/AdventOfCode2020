@@ -3,11 +3,19 @@ import Data.List (group, intercalate, sort)
 import Helpers (splitOn)
 
 main :: IO ()
-main = interact $ lines >>> splitOn null >>> part1 >>> show
+main =
+  interact $
+  lines >>>
+  splitOn null >>>
+  (solve <$> [answeredAny, answeredAll] <*>) . pure >>> map show >>> unlines
 
--- part1
-part1 :: [[String]] -> Int
-part1 = sum . map answered
+solve :: ([String] -> Int) -> [[String]] -> Int
+solve answered = sum . map answered
 
-answered :: [String] -> Int
-answered = length . group . sort . intercalate ""
+answeredAny :: [String] -> Int
+answeredAny = length . group . sort . intercalate ""
+
+answeredAll :: [String] -> Int
+answeredAll = length . foldl1 intersect
+  where
+    intersect xs ys = [x | x <- xs, x `elem` ys]
