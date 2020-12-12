@@ -28,6 +28,7 @@ common shared-properties-lib
   build-depends:
     base ^>=4.13.0.0
     , parsec
+    , containers
   ghc-options:
     -O2
     -Wall
@@ -41,6 +42,7 @@ common shared-properties
   build-depends:
     base ^>=4.13.0.0
     , parsec
+    , containers
   other-modules: Helpers
   ghc-options:
     -O2

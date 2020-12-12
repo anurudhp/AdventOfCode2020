@@ -1,7 +1,7 @@
 module Helpers where
 
 -- count number of elements satisfying the predicate
-countPred :: Eq a => (a -> Bool) -> [a] -> Int
+countPred :: (a -> Bool) -> [a] -> Int
 countPred p = length . filter p
 
 -- count number of elements equal to a value
@@ -31,3 +31,4 @@ strToBin = foldl (\acc b -> 2 * acc + b) 0 . map bit
   where
     bit '0' = 0
     bit '1' = 1
+    bit _ = undefined
