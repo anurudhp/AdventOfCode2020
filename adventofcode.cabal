@@ -29,6 +29,7 @@ common shared-properties-lib
     base ^>=4.13.0.0
     , parsec
     , containers
+    , extra
   ghc-options:
     -O2
     -Wall
@@ -43,6 +44,7 @@ common shared-properties
     base ^>=4.13.0.0
     , parsec
     , containers
+    , extra
   other-modules: Helpers
   ghc-options:
     -O2
@@ -95,4 +97,8 @@ executable day6
 executable day7
   import: shared-properties
   main-is: day7.hs
+
+executable day8
+  import: shared-properties
+  main-is: day8.hs
 
