@@ -102,3 +102,71 @@ executable day8
   import: shared-properties
   main-is: day8.hs
 
+executable day9
+  import: shared-properties
+  main-is: day9.hs
+
+executable day10
+  import: shared-properties
+  main-is: day10.hs
+
+executable day11
+  import: shared-properties
+  main-is: day11.hs
+
+executable day12
+  import: shared-properties
+  main-is: day12.hs
+
+executable day13
+  import: shared-properties
+  main-is: day13.hs
+
+executable day14
+  import: shared-properties
+  main-is: day14.hs
+
+executable day15
+  import: shared-properties
+  main-is: day15.hs
+
+executable day16
+  import: shared-properties
+  main-is: day16.hs
+
+executable day17
+  import: shared-properties
+  main-is: day17.hs
+
+executable day18
+  import: shared-properties
+  main-is: day18.hs
+
+executable day19
+  import: shared-properties
+  main-is: day19.hs
+
+executable day20
+  import: shared-properties
+  main-is: day20.hs
+
+executable day21
+  import: shared-properties
+  main-is: day21.hs
+
+executable day22
+  import: shared-properties
+  main-is: day22.hs
+
+executable day23
+  import: shared-properties
+  main-is: day23.hs
+
+executable day24
+  import: shared-properties
+  main-is: day24.hs
+
+executable day25
+  import: shared-properties
+  main-is: day25.hs
+

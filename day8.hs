@@ -1,24 +1,61 @@
+{-# LANGUAGE ParallelListComp #-}
+
 import Control.Arrow ((>>>))
+import Data.List (inits, tails)
+import Data.Maybe (mapMaybe)
 
 main :: IO ()
-main = interact $ readProg >>> mkProg >>> ([stepTillRepeat] <*>) . pure >>> show
+main =
+  interact $
+  readProg >>> ([valueOnRepeat, valueOnTerminate] <*>) . pure >>> show
 
-stepTillRepeat :: ExecState -> Int
-stepTillRepeat s =
-  case stepNew s of
-    Nothing -> acc s
-    Just s' -> stepTillRepeat s'
+-- part 1
+stepTillDone :: ExecState -> ExecState
+stepTillDone st =
+  let en = step st
+   in if status en == InProgress
+        then stepTillDone en
+        else en
 
+valueOnRepeat :: [Inst] -> Int
+valueOnRepeat = acc . stepTillDone . mkProg
+
+-- part 2
+getIfTerminates :: ExecState -> Maybe Int
+getIfTerminates st =
+  let en = stepTillDone st
+   in if status en == Done
+        then Just (acc en)
+        else Nothing
+
+flipSingleNopJmp :: [Inst] -> [[Inst]]
+flipSingleNopJmp is =
+  [ pre ++ flipNopJmpInst cur : suf
+  | pre <- inits is
+  | cur <- is
+  | suf <- tail $ tails is
+  ]
+  where
+    flipNopJmp Nop = Jmp
+    flipNopJmp Jmp = Nop
+    flipNopJmp op = op
+    flipNopJmpInst (Inst op arg count) = Inst (flipNopJmp op) arg count
+
+valueOnTerminate :: [Inst] -> Int
+valueOnTerminate = head . mapMaybe (getIfTerminates . mkProg) . flipSingleNopJmp
+
+-- grammar and semantics
 data Op
   = Nop
   | Acc
   | Jmp
-  deriving (Show)
+  deriving (Show, Eq)
 
 readOp :: String -> Op
 readOp "nop" = Nop
 readOp "acc" = Acc
 readOp "jmp" = Jmp
+readOp _ = undefined
 
 data Inst =
   Inst
@@ -26,7 +63,7 @@ data Inst =
     , getArg :: Int
     , usedCount :: Int
     }
-  deriving (Show)
+  deriving (Show, Eq)
 
 readInst :: String -> Inst
 readInst inst =
@@ -35,6 +72,7 @@ readInst inst =
   where
     readI ('+':n) = read n
     readI ('-':n) = -(read n)
+    readI _ = undefined
 
 updateCount :: Inst -> Inst
 updateCount (Inst op arg count) = Inst op arg (count + 1)
@@ -43,7 +81,13 @@ readProg :: String -> [Inst]
 readProg = map readInst . lines
 
 mkProg :: [Inst] -> ExecState
-mkProg inst = ExecState [] (head inst) (tail inst) 0
+mkProg inst = ExecState [] (head inst) (tail inst) 0 InProgress
+
+data Status
+  = Done
+  | Loop
+  | InProgress
+  deriving (Show, Eq)
 
 data ExecState =
   ExecState
@@ -51,34 +95,39 @@ data ExecState =
     , curInst :: Inst
     , tapeRight :: [Inst]
     , acc :: Int
+    , status :: Status
     }
-  deriving (Show)
+  deriving (Show, Eq)
 
 accValue :: Int -> ExecState -> ExecState
-accValue inc (ExecState l c r a) = ExecState l c r (a + inc)
+accValue inc (ExecState l c r a s) = ExecState l c r (a + inc) s
 
 moveRight :: ExecState -> ExecState
-moveRight (ExecState l c r a) = ExecState (c : l) (head r) (tail r) a
+moveRight es@(ExecState l c r a s)
+  | s /= InProgress = es
+  | null r = ExecState l c r a Done
+  | otherwise = ExecState (c : l) (head r) (tail r) a s
 
 moveLeft :: ExecState -> ExecState
-moveLeft (ExecState l c r a) = ExecState (tail l) (head l) (c : r) a
+moveLeft es@(ExecState l c r a s)
+  | s /= InProgress = es
+  | null l = ExecState l c r a Done
+  | otherwise = ExecState (tail l) (head l) (c : r) a s
 
 moveN :: Int -> ExecState -> ExecState
 moveN n s
-  | n == 0 = s
   | n > 0 = iterate moveRight s !! n
   | n < 0 = iterate moveLeft s !! (-n)
+  | otherwise = s
 
 step :: ExecState -> ExecState
-step (ExecState l c r a) =
-  let c' = updateCount c
-   in let s = ExecState l c' r a
-       in case getOp c of
-            Nop -> moveRight s
-            Acc -> moveRight $ accValue (getArg c) s
-            Jmp -> moveN (getArg c) s
-
-stepNew :: ExecState -> Maybe ExecState
-stepNew s
-  | usedCount (curInst s) == 0 = Just $ step s
-  | otherwise = Nothing
+step es@(ExecState l c r a s)
+  | s /= InProgress = es
+  | usedCount c /= 0 = ExecState l c r a Loop
+  | otherwise =
+    let c' = updateCount c
+     in let es' = ExecState l c' r a s
+         in case getOp c of
+              Nop -> moveRight es'
+              Acc -> moveRight $ accValue (getArg c) es'
+              Jmp -> moveN (getArg c) es'
