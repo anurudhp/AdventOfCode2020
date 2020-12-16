@@ -1,5 +1,7 @@
 module Helpers where
 
+import Data.List
+
 -- count number of elements satisfying the predicate
 countPred :: (a -> Bool) -> [a] -> Int
 countPred p = length . filter p
@@ -7,6 +9,10 @@ countPred p = length . filter p
 -- count number of elements equal to a value
 count :: Eq a => a -> [a] -> Int
 count x = countPred (== x)
+
+-- unique elements from a list
+unique :: Ord a => [a] -> [a]
+unique = map head . group . sort
 
 -- split into chunks of fixed size
 chunksOf :: Int -> [a] -> [[a]]
