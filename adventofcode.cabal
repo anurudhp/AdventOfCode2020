@@ -27,7 +27,6 @@ common shared-properties-lib
   default-language: Haskell2010
   build-depends:
     base ^>=4.13.0.0
-    , parsec
     , containers
     , extra
   ghc-options:
@@ -45,6 +44,7 @@ common shared-properties
     , parsec
     , containers
     , extra
+    , monad-loops
   other-modules: Helpers
   ghc-options:
     -O2
