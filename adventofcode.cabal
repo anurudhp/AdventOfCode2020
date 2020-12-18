@@ -70,41 +70,41 @@ common shared-properties
 --   -- Base language which the package is written in.
 --   default-language:    Haskell2010
 
-executable day1
+executable day01
   import: shared-properties
-  main-is: day1.hs
+  main-is: day01.hs
 
-executable day2
+executable day02
   import: shared-properties
-  main-is: day2.hs
+  main-is: day02.hs
 
-executable day3
+executable day03
   import: shared-properties
-  main-is: day3.hs
+  main-is: day03.hs
 
-executable day4
+executable day04
   import: shared-properties
-  main-is: day4.hs
+  main-is: day04.hs
 
-executable day5
+executable day05
   import: shared-properties
-  main-is: day5.hs
+  main-is: day05.hs
 
-executable day6
+executable day06
   import: shared-properties
-  main-is: day6.hs
+  main-is: day06.hs
 
-executable day7
+executable day07
   import: shared-properties
-  main-is: day7.hs
+  main-is: day07.hs
 
-executable day8
+executable day08
   import: shared-properties
-  main-is: day8.hs
+  main-is: day08.hs
 
-executable day9
+executable day09
   import: shared-properties
-  main-is: day9.hs
+  main-is: day09.hs
 
 executable day10
   import: shared-properties
