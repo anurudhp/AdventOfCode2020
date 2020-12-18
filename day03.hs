@@ -2,8 +2,7 @@ import Control.Arrow ((>>>))
 import Helpers
 
 main :: IO ()
-main =
-  interact $ lines >>> ([solve1, solve2] <*>) . pure >>> map show >>> unlines
+main = interact $ lines >>> ([solve1, solve2] <*>) . pure >>> show
 
 numTrees :: Int -> Int -> [String] -> Int
 numTrees r d xs = count '#' (zipWith (!!) rows cols)

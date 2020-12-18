@@ -11,7 +11,7 @@ main =
   processRules >>>
   ([countAncestors "shiny-gold", totalInside . findBagByName "shiny-gold"] <*>) .
   pure >>>
-  map show >>> unlines
+  show
 
 data Bag =
   Bag String [(Bag, Int)]

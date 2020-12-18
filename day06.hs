@@ -6,8 +6,7 @@ main :: IO ()
 main =
   interact $
   lines >>>
-  splitOn null >>>
-  (solve <$> [answeredAny, answeredAll] <*>) . pure >>> map show >>> unlines
+  splitOn null >>> (solve <$> [answeredAny, answeredAll] <*>) . pure >>> show
 
 solve :: ([String] -> Int) -> [[String]] -> Int
 solve answered = sum . map answered

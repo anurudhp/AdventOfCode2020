@@ -2,9 +2,7 @@ import Control.Arrow ((>>>))
 import Text.Parsec
 
 main :: IO ()
-main =
-  interact $
-  lines >>> (solve <$> [valid1, valid2] <*>) . pure >>> map show >>> unlines
+main = interact $ lines >>> (solve <$> [valid1, valid2] <*>) . pure >>> show
 
 solve :: Validator -> [String] -> Int
 solve valid = length . filter id . map process

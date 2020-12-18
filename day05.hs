@@ -3,9 +3,7 @@ import Data.List ((\\), sort)
 import Helpers (strToBin)
 
 main :: IO ()
-main =
-  interact $
-  lines >>> ([highestSeat, findMySeat] <*>) . pure >>> map show >>> unlines
+main = interact $ lines >>> ([highestSeat, findMySeat] <*>) . pure >>> show
 
 -- part 1
 highestSeat :: [String] -> Int

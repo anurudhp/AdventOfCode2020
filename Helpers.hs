@@ -48,6 +48,7 @@ binToStrTailRec n suf
   | n == 1 = '1' : suf
   | even n = binToStrTailRec (n `div` 2) ('0' : suf)
   | odd n = binToStrTailRec (n `div` 2) ('1' : suf)
+  | otherwise = undefined
 
 -- Convert integer to binary string
 binToStr :: Int -> String

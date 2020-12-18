@@ -10,8 +10,7 @@ main =
   lines >>>
   splitOn null >>>
   map unwords >>>
-  (countPred <$> [checkValidBasic, checkValidFull] <*>) . pure >>>
-  map show >>> unlines
+  (countPred <$> [checkValidBasic, checkValidFull] <*>) . pure >>> show
 
 -- part 1
 checkValidBasic :: String -> Bool
