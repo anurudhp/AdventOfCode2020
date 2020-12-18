@@ -1,13 +1,14 @@
 module Helpers where
 
+import Data.Bool (bool)
 import Data.List
 
 -- count number of elements satisfying the predicate
-countPred :: (a -> Bool) -> [a] -> Int
-countPred p = length . filter p
+countPred :: Foldable t => (a -> Bool) -> t a -> Int
+countPred p = foldl (flip (bool id (1 +) . p)) 0
 
 -- count number of elements equal to a value
-count :: Eq a => a -> [a] -> Int
+count :: (Foldable t, Eq a) => a -> t a -> Int
 count x = countPred (== x)
 
 -- unique elements from a list
@@ -54,8 +55,8 @@ binToStr n = binToStrTailRec n ""
 
 -- apply a single value translation
 -- replace each occurrence of x with x'
-translate :: (Eq a) => a -> a -> [a] -> [a]
-translate x x' = map conv
+translate :: (Functor f, Eq a) => a -> a -> f a -> f a
+translate x x' = fmap conv
   where
     conv y
       | y == x = x'
