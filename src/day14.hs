@@ -1,7 +1,7 @@
+import AOC.Helpers
 import Control.Arrow ((>>>))
 import Data.Bits
 import qualified Data.Map.Strict as M
-import Helpers
 import Text.Parsec
 
 main :: IO ()

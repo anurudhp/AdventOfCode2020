@@ -1,6 +1,6 @@
+import AOC.Helpers (unique)
 import Control.Arrow ((>>>))
 import Data.List ((\\))
-import Helpers (unique)
 import Text.Parsec
 
 main :: IO ()

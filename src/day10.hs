@@ -1,6 +1,6 @@
+import AOC.Helpers (count)
 import Control.Arrow ((>>>))
 import Data.List (sort)
-import Helpers (count)
 
 main :: IO ()
 main =

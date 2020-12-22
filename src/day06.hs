@@ -1,6 +1,6 @@
+import AOC.Helpers (splitOn)
 import Control.Arrow ((>>>))
 import Data.List (group, intercalate, sort)
-import Helpers (splitOn)
 
 main :: IO ()
 main =

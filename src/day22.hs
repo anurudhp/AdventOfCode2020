@@ -1,5 +1,5 @@
+import AOC.Helpers (splitOn)
 import Control.Arrow ((>>>))
-import Helpers (splitOn)
 
 main :: IO ()
 main = interact $ mkInput >>> ([part1] <*>) . pure >>> show

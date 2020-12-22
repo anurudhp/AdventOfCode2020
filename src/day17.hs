@@ -1,11 +1,11 @@
 {-# LANGUAGE ParallelListComp #-}
 
+import AOC.Helpers (count)
 import Control.Arrow ((>>>))
 import Data.Bool (bool)
 import Data.List (transpose)
 import qualified Data.Map.Strict as M
 import Data.Maybe (catMaybes)
-import Helpers (count)
 
 main :: IO ()
 main =

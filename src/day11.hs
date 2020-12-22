@@ -1,10 +1,10 @@
 {-# LANGUAGE ParallelListComp #-}
 
+import AOC.Helpers (count)
 import Control.Arrow ((>>>))
 import Control.Monad.Loops (iterateUntilM)
 import qualified Data.Map.Strict as M
 import Data.Maybe (catMaybes)
-import Helpers (count)
 
 main :: IO ()
 main =

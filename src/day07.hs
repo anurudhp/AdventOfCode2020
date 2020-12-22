@@ -1,8 +1,8 @@
+import AOC.Helpers (countPred)
 import Control.Arrow ((>>>))
 import Data.Bifunctor (Bifunctor(first))
 import qualified Data.Map.Strict as M
 import Data.Map.Strict ((!))
-import Helpers (countPred)
 
 main :: IO ()
 main =

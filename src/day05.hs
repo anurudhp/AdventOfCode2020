@@ -1,6 +1,6 @@
+import AOC.Helpers (strToBin)
 import Control.Arrow ((>>>))
 import Data.List ((\\), sort)
-import Helpers (strToBin)
 
 main :: IO ()
 main = interact $ lines >>> ([highestSeat, findMySeat] <*>) . pure >>> show
