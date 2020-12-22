@@ -2,15 +2,16 @@
 
 import Control.Arrow ((>>>))
 import Data.Bool (bool)
+import Data.List (transpose)
 import qualified Data.Map.Strict as M
 import Data.Maybe (catMaybes)
-import Data.Tuple.Extra (fst3, snd3, thd3)
 import Helpers (count)
 
 main :: IO ()
-main = interact $ lines >>> mkGrid >>> ([aliveAfter 6] <*>) . pure >>> show
+main =
+  interact $
+  lines >>> (mkGrid <$> [3, 4] <*>) . pure >>> map (aliveAfter 6) >>> show
 
--- part 1
 aliveAfter :: Int -> Grid -> Int
 aliveAfter n = count Alive . stepN n . expandBy n
 
@@ -20,15 +21,18 @@ data Cell
   | Dead
   deriving (Eq, Show)
 
-type Loc = (Int, Int, Int)
+type Loc = [Int]
 
 type Grid = M.Map Loc Cell
 
-mkGrid :: [String] -> Grid
-mkGrid g =
+mkGrid :: Int -> [String] -> Grid
+mkGrid d g =
   M.fromList $
   concat
-    [ [((i, j, 0), bool Dead Alive (c == '#')) | c <- row | j <- [1 ..]]
+    [ [ ([i, j] ++ replicate (d - 2) 0, bool Dead Alive (c == '#'))
+      | c <- row
+      | j <- [1 ..]
+      ]
     | row <- g
     | i <- [1 ..]
     ]
@@ -36,16 +40,9 @@ mkGrid g =
 type StepCellFn = Grid -> Loc -> Cell -> Cell
 
 neighbours :: Loc -> Grid -> [Cell]
-neighbours (x, y, z) g =
-  catMaybes $
-  M.lookup <$>
-  [ (x + dx, y + dy, z + dz)
-  | dx <- [-1, 0, 1]
-  , dy <- [-1, 0, 1]
-  , dz <- [-1, 0, 1]
-  , dx /= 0 || dy /= 0 || dz /= 0
-  ] <*>
-  pure g
+neighbours loc g = catMaybes $ M.lookup <$> nei <*> pure g
+  where
+    nei = filter (/= loc) $ mapM (\c -> [c - 1, c, c + 1]) loc
 
 stepCell :: StepCellFn
 stepCell g l cur
@@ -56,20 +53,11 @@ stepCell g l cur
     occ = count Alive (neighbours l g)
 
 expandBy :: Int -> Grid -> Grid
-expandBy n g = foldl ins g locs
+expandBy n g = foldl ins g keys
   where
     ins g' loc = M.insertWith (const id) loc Dead g'
-    keys = M.keys g
-    xs = map fst3 keys
-    ys = map snd3 keys
-    zs = map thd3 keys
-    expandedRange ps = [minimum ps - n .. maximum ps + n]
-    locs =
-      [ (x, y, z)
-      | x <- expandedRange xs
-      , y <- expandedRange ys
-      , z <- expandedRange zs
-      ]
+    keys = mapM expandRange . transpose . M.keys $ g
+    expandRange ps = [minimum ps - n .. maximum ps + n]
 
 stepOnce :: Grid -> Grid
 stepOnce g = M.mapWithKey (stepCell g) g
