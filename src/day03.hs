@@ -1,5 +1,5 @@
+import AOC.Helpers (chunksOf, count)
 import Control.Arrow ((>>>))
-import Helpers
 
 main :: IO ()
 main = interact $ lines >>> ([solve1, solve2] <*>) . pure >>> show

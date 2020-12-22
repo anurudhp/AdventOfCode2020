@@ -5,7 +5,7 @@ cabal-version:       2.4
 -- http://haskell.org/cabal/users-guide/
 
 -- The name of the package.
-name:                adventofcode2020
+name:                AOC
 
 -- The package version.  See the Haskell package versioning policy (PVP)
 -- for standards guiding when and how versions should be incremented.
@@ -23,7 +23,7 @@ license-file:        LICENSE
 author:              anurudhp
 maintainer:          anurudhp97@gmail.com
 
-common shared-properties-lib
+library
   default-language: Haskell2010
   build-depends:
     base ^>=4.13.0.0
@@ -32,10 +32,8 @@ common shared-properties-lib
   ghc-options:
     -O2
     -Wall
-
-library
-  import: shared-properties-lib
-  exposed-modules: Helpers
+  hs-source-dirs: lib
+  exposed-modules: AOC.Helpers
 
 common shared-properties
   default-language: Haskell2010
@@ -45,7 +43,8 @@ common shared-properties
     , containers
     , extra
     , monad-loops
-  other-modules: Helpers
+    , AOC
+  hs-source-dirs: src
   ghc-options:
     -O2
     -Wall

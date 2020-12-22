@@ -1,4 +1,4 @@
-module Helpers where
+module AOC.Helpers where
 
 import Data.Bool (bool)
 import Data.List

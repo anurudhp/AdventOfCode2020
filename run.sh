@@ -1,9 +1,9 @@
 #!/bin/bash
 
 if [ "$#" -ge "1" ] ; then
-  tests=$1
+  tests=src/$1.hs
 else
-  tests=$(ls day*.hs)
+  tests=$(ls src/day*.hs)
   echo "Running All Tests..."
   echo "===================="
   echo
