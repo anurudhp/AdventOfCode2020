@@ -11,7 +11,6 @@ TODO
 1. Day 11 Part 2
 1. Day 14 Part 2
 1. Day 15 Part 2
-1. Day 16 Part 2
 1. Day 19
 1. Day 20
 1. Day 21
