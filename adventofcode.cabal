@@ -43,6 +43,7 @@ common shared-properties
     , containers
     , extra
     , monad-loops
+    , utility-ht
     , AOC
   hs-source-dirs: src
   ghc-options:

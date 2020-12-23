@@ -12,8 +12,12 @@ fi
 for t in $tests ; do
   base=$(basename $t ".hs")
   if [ -f "$t" ] ; then
-    echo "$base:"
-    cabal run -v0 "$base" <"inputs/$base.in"
+    echo "$base: "
+    if [ -f "inputs/$base.in" ] ; then
+      cabal run -v0 "$base" <"inputs/$base.in"
+    else
+      cabal run -v0 "$base"
+    fi
     echo
   fi
 done
