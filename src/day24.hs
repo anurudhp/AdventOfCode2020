@@ -1,16 +1,31 @@
-import AOC.Helpers (countPred)
+import AOC.Helpers (countPred, unique)
 import Control.Arrow ((>>>))
 import Data.Functor (($>))
 import Data.List (group, sort)
-import Debug.Trace (trace)
+import qualified Data.Set as S
 import Text.Parsec ((<|>), char, many, parse)
 
 main :: IO ()
-main = interact $ mkInput >>> ([solve1] <*>) . pure >>> show
+main =
+  interact $ mkInput >>> (numBlackTilesAfter <$> [0, 100] <*>) . pure >>> show
 
--- part 1
-solve1 :: Input -> Int
-solve1 = countPred (odd . length) . group . sort . map pathToLoc
+getBlackTiles :: Input -> [Loc]
+getBlackTiles = map head . filter (odd . length) . group . sort . map pathToLoc
+
+numBlackTilesAfter :: Int -> Input -> Int
+numBlackTilesAfter n = length . (!! n) . iterate updateGrid . getBlackTiles
+
+updateGrid :: [Loc] -> [Loc]
+updateGrid black =
+  filter (predBlack . countBlackNeighbours) black ++
+  filter (predWhite . countBlackNeighbours) white
+  where
+    blackS = S.fromList black
+    white =
+      unique . filter (`S.notMember` blackS) . concatMap neighbours $ black
+    countBlackNeighbours = countPred (`S.member` blackS) . neighbours
+    predBlack n = n == 1 || n == 2
+    predWhite n = n == 2
 
 -- helpers
 data Dir
@@ -34,9 +49,16 @@ dirToLoc (South East) = (0, -1)
 dirToLoc (South West) = (-1, -1)
 dirToLoc (North East) = (1, 1)
 dirToLoc (North West) = (0, 1)
+dirToLoc _ = undefined
 
 pathToLoc :: Path -> Loc
 pathToLoc = foldl (<+>) (0, 0) . map dirToLoc
+
+neighbours :: Loc -> [Loc]
+neighbours l =
+  map
+    ((l <+>) . dirToLoc)
+    [East, West, South East, South West, North East, North West]
 
 -- Input
 type Input = [Path]
