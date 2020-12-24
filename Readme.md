@@ -13,7 +13,6 @@ TODO
 1. Day 15 Part 2
 1. Day 19
 1. Day 20
-1. Day 21 Part 2
 1. Day 22 Part 2
 1. Day 23 Part 2
 
