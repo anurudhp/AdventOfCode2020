@@ -16,6 +16,3 @@ TODO
 1. Day 22 Part 2
 1. Day 23 Part 2
 
-Not yet released:
-
-1. Day 25
